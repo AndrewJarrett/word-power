@@ -1,5 +1,6 @@
 # Ignore the data directory and data sets
 data/*
+SEC-Edgar-data/*
 *.sas7bdat
 *.xlsx
 *.csv
