@@ -2,11 +2,14 @@ import pandas as pd
 from pandas import DataFrame, read_sas, read_csv
 
 from SECEdgar.crawler import SecCrawler
+from multiprocessing import Pool
+from itertools import repeat
 
 import pickle
 import redis
 import zlib
 import math
+import timeit
 
 class WordPower:
     """This class represents the object used for generating Word Power weights"""
@@ -26,19 +29,25 @@ class WordPower:
                 print("Loading " + key + " from Redis.")
                 self.data = pickle.loads(zlib.decompress(self.rds.get(key)))
             else:
-                print("Loading data:crsp-comp from disk.")
+                print("Loading " + key + " from disk.")
                 self.data = read_sas("data/crsp_comp.sas7bdat")
 
                 # Trim the SAS data set
                 self.data = self.data[['CUSIP','PERMNO','cik','tic','date','PRC','RET','vwretd']]
 
                 # Sort by date and then drop anything outside the time range
+                self.data.set_index(keys=['date'], inplace=True)
+                mask = (self.data.index >= '01-01-' + str(self.start)) & (self.data.index <= '12-31-' + str(self.end))
+                self.data = self.data.loc[mask]
+
+                # Remove the 'date' index
+                self.data.reset_index(inplace=True)
 
                 # Sort the set by cusip, permno, cik, and then year (descending)
                 self.data.sort_values(['CUSIP', 'PERMNO', 'cik', 'date'], ascending=[True, True, True, False], inplace=True)
 
                 # Re-index the dataframe after sorting
-                self.data.reset_index(inplace=True)
+                self.data.reset_index(inplace=True, drop=True)
 
                 self.rds.set(key, zlib.compress(pickle.dumps(self.data)))
 
@@ -111,6 +120,7 @@ class WordPower:
                 # Save this to redis for later
                 self.rds.set('data:2of12inf', zlib.compress(pickle.dumps(self.dict_2of12inf)))
 
+
     # This function will scrape the SEC Edgar website for 10-Ks
     def scrape_edgar(self):
         # Remove any duplicates where CUSIP, PERMNO, and CIK match
@@ -123,10 +133,19 @@ class WordPower:
         crawler = SecCrawler()
         end_date = str(self.end) + '1231'
         count = str(math.ceil((self.end - self.start) / 10) * 10)
+        
+        p = Pool()
+        rows = ciks.to_dict(orient='records')
+        results = p.starmap(crawl, zip(rows, repeat(end_date), repeat(count), repeat(crawler)))
 
-        print(end_date, count)
+        #for index, row in ciks.iterrows():
+        #    cik = row.iloc[0]
+        #    tic = row.iloc[1]
+        #    print("Crawler filing_10K")
+        #    #crawler.filing_10K(tic, cik, end_date, count)
 
-        for index, row in ciks.iterrows():
-            cik = row.iloc[0]
-            tic = row.iloc[1]
-            crawler.filing_10K(tic, cik, end_date, count)
+def crawl(row, end_date, count, crawler):
+    cik = row['cik'].decode('utf-8')
+    tic = row['tic'].decode('utf-8')
+    #print(tic, cik, end_date, count)
+    crawler.filing_10K(tic, cik, end_date, count)
