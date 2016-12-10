@@ -138,14 +138,7 @@ class WordPower:
         rows = ciks.to_dict(orient='records')
         results = p.starmap(crawl, zip(rows, repeat(end_date), repeat(count), repeat(crawler)))
 
-        #for index, row in ciks.iterrows():
-        #    cik = row.iloc[0]
-        #    tic = row.iloc[1]
-        #    print("Crawler filing_10K")
-        #    #crawler.filing_10K(tic, cik, end_date, count)
-
 def crawl(row, end_date, count, crawler):
     cik = row['cik'].decode('utf-8')
     tic = row['tic'].decode('utf-8')
-    #print(tic, cik, end_date, count)
     crawler.filing_10K(tic, cik, end_date, count)
