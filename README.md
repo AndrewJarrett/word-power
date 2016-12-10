@@ -14,4 +14,13 @@ This outlines the project structure.
 * `data/_error` - This folder is used to hold 10-K files that contained errors that made it impossible to analyze
 * `data/_nostockdata` - This folder contains 10-K files in which we had no stock information for the company on the filing date
 * `data/_outofrange` - This folder contains 10-K files that are outside of our date range that we are looking at
-
+* `data/SEC-Edgar-data` - This folder is created by the Jupyter Notebook program to contain the download 10-K files
+* `lib` - This folder contains needed library files that may be helpful
+* `notebooks` - This folder contains a Jupyter Notebook file that was used in development of the algorithm
+* `SEC-Edgar-data` - This folder contains the download 10-K files from the `main.py` program
+* `CRSP+Comp.egp` - This is the SAS Enterprise Guide project file that can be used to generate the CRSP and Compustat data
+* `CRSP+Comp.sas` - This is the SAS code file that can be run to generate the CRSP and Compustat data
+* `main.py` - This is the main file that runs the program version of the algorithm
+* `requirements.txt` - This file contains all needed dependencies which can be installed via `$ pip install -r requirements.txt`
+* `Word Power - A New Approach for Content Analysis.pdf` - This is the PDF version of the paper we are recreating
+* `WordPower.py` - This is the Python file that contains code for the `WordPower` class that the `main.py` file uses
