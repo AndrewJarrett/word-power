@@ -51,7 +51,7 @@ class WordPower:
         # Read in SAS data set - takes a while so try to use redis...
         try: self.data
         except AttributeError:
-            key = 'data:crsp-comp:' + str(self.start) + '-' + str(self.end)
+            key = 'data:crsp-comp'
             if self.rds.exists(key):
                 print("Loading " + key + " from Redis.")
                 self.data = pickle.loads(zlib.decompress(self.rds.get(key)))
@@ -61,14 +61,6 @@ class WordPower:
 
                 # Trim the SAS data set
                 self.data = self.data[['CUSIP','PERMNO','cik','tic','date','PRC','RET','vwretd']]
-
-                # Sort by date and then drop anything outside the time range
-                self.data.set_index(keys=['date'], inplace=True)
-                mask = (self.data.index >= '01-01-' + str(self.start)) & (self.data.index <= '12-31-' + str(self.end))
-                self.data = self.data.loc[mask]
-
-                # Remove the 'date' index
-                self.data.reset_index(inplace=True)
 
                 # Sort the set by cusip, permno, cik, and then year (descending)
                 self.data.sort_values(['CUSIP', 'PERMNO', 'cik', 'date'], ascending=[True, True, True, False], inplace=True)
