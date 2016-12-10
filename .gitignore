@@ -1,9 +1,10 @@
 # Ignore the data directory and data sets
-data/*
+data/_amended/*.txt
+data/_error/*.txt
+data/_nostockdata/*.txt
+data/_outofrange/*.txt
 SEC-Edgar-data/*
 *.sas7bdat
-*.xlsx
-*.csv
 *.pyc
 __pycache__/*
 
