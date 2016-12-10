@@ -12,19 +12,24 @@ reports = True
 if __name__ == '__main__':
     wp = WordPower(start, end)
 
+    print("Running algorithm for " + str(start) + " - " + str(end) + "\n")
+
     print("Loading data...")
     wp.load_data()
 
     if scrape:
-        print("Scraping SEC Edgar website for 10-Ks...")
+        print("\nScraping SEC Edgar website for 10-Ks...")
         wp.scrape_edgar()
 
     if process:
-        pass
+        print("\nProcessing the 10-K files...")
+        wp.process_files()
 
     if regression:
-        pass
+        print("\nRunning the regression analysis...")
+        wp.regression_analysis()
 
     if reports:
-        pass
+        print("\nRunning the reports...")
+        wp.run_reports()
 
