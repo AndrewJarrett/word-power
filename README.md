@@ -24,3 +24,6 @@ This outlines the project structure.
 * `requirements.txt` - This file contains all needed dependencies which can be installed via `$ pip install -r requirements.txt`
 * `Word Power - A New Approach for Content Analysis.pdf` - This is the PDF version of the paper we are recreating
 * `WordPower.py` - This is the Python file that contains code for the `WordPower` class that the `main.py` file uses
+
+## Contact
+For any issues that may occur or if there is an issue with obtaining the correct data, please contact Andrew Jarrett at andrew.jarrett@scheller.gatech.edu.
