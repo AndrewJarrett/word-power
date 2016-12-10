@@ -4,6 +4,10 @@ SEC-Edgar-data/*
 *.sas7bdat
 *.xlsx
 *.csv
+*.pyc
+
+# Ignore the checkpoint files for jupyter notebooks
+notebooks/.ipynb_checkpoints
 
 # Windows image file caches
 Thumbs.db
