@@ -26,4 +26,4 @@ This outlines the project structure.
 * `WordPower.py` - This is the Python file that contains code for the `WordPower` class that the `main.py` file uses
 
 ## Contact
-For any issues that may occur or if there is an issue with obtaining the correct data, please contact Andrew Jarrett at andrew.jarrett@scheller.gatech.edu.
+For any issues that may occur or if there is an issue with obtaining the correct data, please contact Andrew Jarrett at andrew.jarrett@gatech.edu.
